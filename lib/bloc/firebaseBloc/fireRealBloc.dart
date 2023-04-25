@@ -1,10 +1,11 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealEvent.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealState.dart';
-import 'package:keepnotes/data_model/fetchDataModel.dart';
 import 'package:keepnotes/utils/toast.dart';
 
 class FireRealBloc extends Bloc<FireRealEvent, FireRealState> {

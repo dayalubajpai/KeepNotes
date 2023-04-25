@@ -1,21 +1,19 @@
-import 'package:keepnotes/data_model/fetchDataModel.dart';
+abstract class FireRealState {}
 
-abstract class FireRealState{}
+class FireRealInitialState extends FireRealState {}
 
-class FireRealInitialState extends FireRealState{}
+class FireRealLoadingState extends FireRealState {}
 
-class FireRealLoadingState extends FireRealState{}
+class FireRealLoadedState extends FireRealState {}
 
-class FireRealLoadedState extends FireRealState{}
+class FireRealErrorState extends FireRealState {}
 
-class FireRealErrorState extends FireRealState{}
+class FireRealInsertState extends FireRealState {}
 
-class FireRealInsertState extends FireRealState{}
-
-class FireRealFetchState extends FireRealState{
+class FireRealFetchState extends FireRealState {
   FireRealFetchState();
 }
 
-class FireRealUpdateState extends FireRealState{}
+class FireRealUpdateState extends FireRealState {}
 
-class FireRealDeleteState extends FireRealState{}
+class FireRealDeleteState extends FireRealState {}
