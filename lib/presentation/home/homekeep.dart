@@ -73,12 +73,13 @@ class KeepHome extends StatelessWidget {
                   },
                   builder: (context, state) {
                     if (state is FireRealFetchState) {
-                      print(state.note);
+                      // print(state.note.toString().length);
                       return StreamBuilder<DatabaseEvent>(
                           stream: state.note,
                           builder: (context, snapshot) {
                             List<NoteModel> noteData = [];
-                            if (snapshot.hasData) {
+                             print(snapshot.data?.snapshot.exists);
+                            if (snapshot.hasData && snapshot.data!.snapshot.exists) {
                               final firstdata =
                                   (snapshot.data!)
                                       .snapshot
@@ -89,7 +90,7 @@ class KeepHome extends StatelessWidget {
                               mapData.forEach((key, value) {
                                 noteData.add(NoteModel.fromJson(value));
                               });
-                              print(noteData.length);
+                              // print(noteData.length);
                               return MasonryGridView.builder(
                                 key: GlobalKey(),
                                   itemCount: noteData.length,
@@ -104,7 +105,9 @@ class KeepHome extends StatelessWidget {
                                     return InkWell(
                                       overlayColor: MaterialStateProperty.all(
                                           Colors.transparent),
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.read<FireRealBloc>().add(FireRealDeleteEvent(id: noteData[index].id.toString()));
+                                      },
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
@@ -141,12 +144,14 @@ class KeepHome extends StatelessWidget {
                                     );
                                   });
                             } else {
-                              return Center(child: CircularProgressIndicator());
+                              return Center(
+                                child: Text("No Data Found"),
+                              );
                             }
                           });
                       // print(state.note.runtimeType);
                     }
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   },
                 )),
             floatingActionButton: FloatingActionButton(

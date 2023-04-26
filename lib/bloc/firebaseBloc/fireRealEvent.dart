@@ -7,7 +7,9 @@ class FireRealAddDataEvent extends FireRealEvent{
   FireRealAddDataEvent({required this.note});
 }
 
-class FireRealFetchDataEvent extends FireRealEvent{
-  // final NoteModel note;
-  // FireRealFetchDataEvent(this.note);
+class FireRealFetchDataEvent extends FireRealEvent{}
+
+class FireRealDeleteEvent extends FireRealEvent{
+  final String id;
+  FireRealDeleteEvent({required this.id});
 }
