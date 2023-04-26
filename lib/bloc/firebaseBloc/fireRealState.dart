@@ -1,3 +1,6 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:keepnotes/data_model/insertDataModel.dart';
+
 abstract class FireRealState {}
 
 class FireRealInitialState extends FireRealState {}
@@ -11,7 +14,8 @@ class FireRealErrorState extends FireRealState {}
 class FireRealInsertState extends FireRealState {}
 
 class FireRealFetchState extends FireRealState {
-  FireRealFetchState();
+  Stream<DatabaseEvent> note;
+  FireRealFetchState(this.note);
 }
 
 class FireRealUpdateState extends FireRealState {}
