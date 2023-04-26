@@ -9,6 +9,8 @@ import 'package:keepnotes/bloc/firebaseBloc/fireRealState.dart';
 import 'package:keepnotes/utils/toast.dart';
 
 class FireRealBloc extends Bloc<FireRealEvent, FireRealState> {
+  final _database = FirebaseDatabase.instance
+      .ref(FirebaseAuth.instance.currentUser?.uid.toString());
   final FirebaseAuth auths = FirebaseAuth.instance;
   final _databaseRef = FirebaseDatabase.instance;
   FireRealBloc() : super(FireRealInitialState()) {
@@ -24,6 +26,15 @@ class FireRealBloc extends Bloc<FireRealEvent, FireRealState> {
               .set(event.note.toJson());
         }
       }
+    });
+  }
+
+  Stream<List<String>> fetchDataFireReal() {
+    print(_database.onValue);
+    return _database.onValue.map((event) {
+      final snapshot = event.snapshot;
+      final data = snapshot.value as Map<String, dynamic>;
+      return data.values.toList().cast<String>();
     });
   }
 }
