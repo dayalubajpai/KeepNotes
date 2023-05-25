@@ -37,27 +37,13 @@ class FireRealBloc extends Bloc<FireRealEvent, FireRealState> {
     on<FireRealFetchDataEvent>((event, emit) {
       // print(_database.onValue.toString().length);
       emit(FireRealFetchState(_database.onValue));
-      // List<NoteModel> noteData = [];
-      // _database.onValue.listen((event) {
-      //   Object? valuex = event.snapshot.value;
-      //   String jsonString = jsonEncode(valuex);
-      //   Map<String, dynamic> mapData = jsonDecode(jsonString);
-      //   mapData.forEach((key, value) {
-      //     noteData.add(NoteModel.fromJson(value));
-      //   });
-      // });
-      // Future.delayed(Duration(seconds: 1),(){
-      //   print(noteData);
-      //   emit(FireRealFetchState(noteData));
-      // });
     });
     on<FireRealDeleteEvent>((event, emit) async {
       emit(FireRealLoadingState());
-      if(event is FireRealDeleteEvent){
+      if (event is FireRealDeleteEvent) {
         await _database.child(event.id).remove();
         utils().toasterMessage(color: Colors.red, message: "Post Delete");
       }
-
     });
   }
   @override

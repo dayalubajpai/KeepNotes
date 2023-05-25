@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealBloc.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealEvent.dart';
 import 'package:keepnotes/data_model/insertDataModel.dart';
@@ -66,13 +67,17 @@ class editKeepNotes extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(onPressed: (){
-
        final note= NoteModel(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
           description: descController.text,
+          date: DateFormat.yMMMd().format(DateTime.now()),
           title: titleController.text
         );
         context.read<FireRealBloc>().add(FireRealAddDataEvent(note: note));
+        print(titleController.text );
+       if( titleController.text != "" || descController.text != ""){
+         Navigator.pop(context);
+       }
         }, label: const Text("Save"),
         backgroundColor: Styles().bgYelColor,
         splashColor: Styles().bgYelColor,

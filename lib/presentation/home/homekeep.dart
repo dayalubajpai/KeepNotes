@@ -105,13 +105,16 @@ class KeepHome extends StatelessWidget {
                                     return InkWell(
                                       overlayColor: MaterialStateProperty.all(
                                           Colors.transparent),
-                                      onTap: () {
+                                      onTap: (){
+                                        print('ontap');
+                                      },
+                                      onLongPress: () {
                                         context.read<FireRealBloc>().add(FireRealDeleteEvent(id: noteData[index].id.toString()));
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                            padding: const EdgeInsets.all(20.0),
+                                             padding: const EdgeInsets.all(20.0),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(20.0),
@@ -125,16 +128,27 @@ class KeepHome extends StatelessWidget {
                                                   noteData[index]
                                                       .title
                                                       .toString(),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 20,
                                                       height: 1.4),
                                                 ),
-                                                SizedBox(
-                                                  height: 10,
+                                                const SizedBox(
+                                                  height: 5,
                                                 ),
                                                 Text(
-                                                  "Date - 07/12/2025",
-                                                  style: TextStyle(
+                                                  noteData[index]
+                                                      .description
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 12,
+                                                      height: 1.4),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                 'Date - ${noteData[index].date.toString()}',
+                                                  style: const TextStyle(
                                                       fontSize: 12,
                                                       height: 1.4),
                                                 )
@@ -144,14 +158,14 @@ class KeepHome extends StatelessWidget {
                                     );
                                   });
                             } else {
-                              return Center(
+                              return const Center(
                                 child: Text("No Data Found"),
                               );
                             }
                           });
                       // print(state.note.runtimeType);
                     }
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   },
                 )),
             floatingActionButton: FloatingActionButton(

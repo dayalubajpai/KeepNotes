@@ -27,10 +27,10 @@ class KeepNotes extends StatelessWidget {
         BlocProvider<InternetCubit>(create: (context) => InternetCubit()),
         BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
         BlocProvider(
-            create: (context) => FireRealBloc()..add(FireRealFetchDataEvent())),
+            create: (context) => FireRealBloc()),
       ],
       child: MaterialApp(
-        home: SplashScreen(),
+        home: KeepHome(),
       ),
     );
   }
