@@ -16,13 +16,15 @@ import 'package:keepnotes/bloc/firebaseBloc/fireRealState.dart';
 import 'package:keepnotes/data_model/insertDataModel.dart';
 import 'package:keepnotes/presentation/edit/editkeep.dart';
 import 'package:keepnotes/presentation/login/signup.dart';
+import 'package:keepnotes/presentation/view/viewKeep.dart';
 import 'package:keepnotes/utils/customStylesKeep.dart';
 import 'package:keepnotes/utils/toast.dart';
 
 class KeepHome extends StatelessWidget {
   KeepHome({Key? key}) : super(key: key);
 
-  StreamController<DatabaseEvent> _myDataController = StreamController<DatabaseEvent>.broadcast();
+  StreamController<DatabaseEvent> _myDataController =
+      StreamController<DatabaseEvent>.broadcast();
   @override
   Widget build(BuildContext context) {
     final cubit = FireRealBloc;
@@ -52,7 +54,14 @@ class KeepHome extends StatelessWidget {
                         actions: [
                           InkWell(
                             onTap: () {
-                              context.read<AuthCubit>().logOut();
+                              _showMyDialog(
+                                buttonText: 'Logout',
+                                titleText: 'Do you want to logout from application?',
+                                context,
+                                onPressed: () {
+                                  context.read<AuthCubit>().logOut();
+                                },
+                              );
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -78,12 +87,10 @@ class KeepHome extends StatelessWidget {
                           stream: state.note,
                           builder: (context, snapshot) {
                             List<NoteModel> noteData = [];
-                             print(snapshot.data?.snapshot.exists);
-                            if (snapshot.hasData && snapshot.data!.snapshot.exists) {
-                              final firstdata =
-                                  (snapshot.data!)
-                                      .snapshot
-                                      .value;
+                            print(snapshot.data?.snapshot.exists);
+                            if (snapshot.hasData &&
+                                snapshot.data!.snapshot.exists) {
+                              final firstdata = (snapshot.data!).snapshot.value;
                               String jsonString = jsonEncode(firstdata);
                               Map<String, dynamic> mapData =
                                   jsonDecode(jsonString);
@@ -92,7 +99,7 @@ class KeepHome extends StatelessWidget {
                               });
                               // print(noteData.length);
                               return MasonryGridView.builder(
-                                key: GlobalKey(),
+                                  key: GlobalKey(),
                                   itemCount: noteData.length,
                                   shrinkWrap: true,
                                   padding: const EdgeInsets.all(5.0),
@@ -105,16 +112,23 @@ class KeepHome extends StatelessWidget {
                                     return InkWell(
                                       overlayColor: MaterialStateProperty.all(
                                           Colors.transparent),
-                                      onTap: (){
-                                        print('ontap');
+                                      onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewKeepNotes( title: noteData[index].title, desc: noteData[index].description, id:int.parse( noteData[index].id.toString()),date : noteData[index].date)));
                                       },
                                       onLongPress: () {
-                                        context.read<FireRealBloc>().add(FireRealDeleteEvent(id: noteData[index].id.toString()));
-                                      },
+                                        _showMyDialog(
+                                          context,
+                                          buttonText: 'Delete',
+                                          titleText: 'Would you like to delete note?',
+                                          onPressed: () {
+                                            context.read<FireRealBloc>().add(FireRealDeleteEvent(id: noteData[index].id.toString()));
+                                          },
+                                        );
+                                            },
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                             padding: const EdgeInsets.all(20.0),
+                                            padding: const EdgeInsets.all(20.0),
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(20.0),
@@ -125,20 +139,28 @@ class KeepHome extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  noteData[index]
-                                                      .title
-                                                      .toString(),
+                                            noteData[index]
+                                                .title
+                                                .toString().length > 65 ?  noteData[index]
+                                                .title
+                                                .toString().substring(0, 65)+'...' :  noteData[index]
+                                                .title
+                                                .toString(),
                                                   style: const TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 18,
                                                       height: 1.4),
                                                 ),
                                                 const SizedBox(
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  noteData[index]
-                                                      .description
-                                                      .toString(),
+                                                   noteData[index]
+                                                    .description
+                                                    .toString().length > 65 ?  noteData[index]
+                                                    .description
+                                                    .toString().substring(0, 65)+'...' :  noteData[index]
+                                                    .description
+                                                    .toString(),
                                                   style: const TextStyle(
                                                       fontSize: 12,
                                                       height: 1.4),
@@ -147,7 +169,7 @@ class KeepHome extends StatelessWidget {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                 'Date - ${noteData[index].date.toString()}',
+                                                  'Date - ${noteData[index].date.toString()}',
                                                   style: const TextStyle(
                                                       fontSize: 12,
                                                       height: 1.4),
@@ -175,7 +197,7 @@ class KeepHome extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => BlocProvider(
                               create: (context) => FireRealBloc(),
-                              child: editKeepNotes(),
+                              child: EditKeepNotes(),
                             )));
               },
               backgroundColor: const Color(0xFFffa505),
@@ -197,4 +219,38 @@ class KeepHome extends StatelessWidget {
       }
     });
   }
+}
+
+Future<void> _showMyDialog(context, {required Function() onPressed, required titleText, required buttonText}) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: Column(
+            children:  <Widget>[
+              Text(titleText),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child:  Text(buttonText, style: TextStyle(color: Colors.red),),
+            onPressed: () {
+              onPressed();
+
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

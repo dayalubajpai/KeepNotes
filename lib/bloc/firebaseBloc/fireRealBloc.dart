@@ -34,6 +34,12 @@ class FireRealBloc extends Bloc<FireRealEvent, FireRealState> {
         }
       }
     });
+    on<FireRealUpdateDataEvent>((event, emit){
+      print(event.notes.id);
+      _databaseRefs
+          .child(event.notes.id.toString())
+          .update(event.notes.toJson());
+    });
     on<FireRealFetchDataEvent>((event, emit) {
       // print(_database.onValue.toString().length);
       emit(FireRealFetchState(_database.onValue));

@@ -5,15 +5,21 @@ import 'package:intl/intl.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealBloc.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealEvent.dart';
 import 'package:keepnotes/data_model/insertDataModel.dart';
+import 'package:keepnotes/presentation/home/homekeep.dart';
 import 'package:keepnotes/utils/customStylesKeep.dart';
 
-class editKeepNotes extends StatelessWidget {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descController = TextEditingController();
-   editKeepNotes({Key? key}) : super(key: key);
+class EditKeepNotes extends StatelessWidget {
+
+  final String? title;
+  final String? desc;
+  final int? ids;
+
+  const EditKeepNotes({Key? key, this.title, this.desc, this.ids}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+    String? titleText, dscText, id ;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -38,10 +44,14 @@ class editKeepNotes extends StatelessWidget {
           children: [
            Container(
              child: TextFormField(
-               controller: titleController,
+               initialValue: title ?? '',
+               // controller: titleController,
                style: GoogleFonts.poppins(fontSize: 20),
                keyboardType: TextInputType.multiline,
                maxLines: null,
+               onChanged: (valu){
+                    titleText = valu;
+               },
                decoration: const InputDecoration(
                  hintText: "Title",
                  border: InputBorder.none,
@@ -52,7 +62,11 @@ class editKeepNotes extends StatelessWidget {
               child: SizedBox(
                  height: double.infinity,
                 child: TextFormField(
-                  controller: descController,
+                  // controller: descController,
+                  initialValue: desc ?? '',
+                  onChanged: (valu){
+                    dscText = valu;
+                  },
                   style: GoogleFonts.poppins(fontSize: 16),
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
@@ -67,16 +81,22 @@ class editKeepNotes extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(onPressed: (){
-       final note= NoteModel(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          description: descController.text,
+        print(ids);
+       final notes= NoteModel(
+          id: ids!= null ? ids.toString() :  DateTime.now().millisecondsSinceEpoch.toString(),
+          description: dscText ?? desc,
           date: DateFormat.yMMMd().format(DateTime.now()),
-          title: titleController.text
+          title: titleText ?? title,
         );
-        context.read<FireRealBloc>().add(FireRealAddDataEvent(note: note));
-        print(titleController.text );
-       if( titleController.text != "" || descController.text != ""){
-         Navigator.pop(context);
+       if(ids != null){
+         print('Da ${ids}');
+         context.read<FireRealBloc>().add(FireRealUpdateDataEvent(notes: notes));
+       }else{
+         context.read<FireRealBloc>().add(FireRealAddDataEvent(note: notes));
+       }
+       if( titleText != "" || dscText != ""){
+         Navigator.of(context).popUntil((route) => route.isFirst);
+         // Navigator.pop(context);
        }
         }, label: const Text("Save"),
         backgroundColor: Styles().bgYelColor,
