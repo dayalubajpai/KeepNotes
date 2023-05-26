@@ -14,7 +14,7 @@ KeepNotes is a powerful note-taking application built with Flutter and Dart, usi
 
 - **Efficient State Management:** Leveraging BLoC, KeepNotes implements efficient state management techniques to handle complex UI interactions while maintaining a reactive and responsive user interface.
 
-- **Persistence with SQLite:** Your notes are securely stored using SQLite, a lightweight and efficient database engine. This ensures your notes are persistently saved, even if you close the app or restart your device.
+- **Persistence with Firebase:** Your notes are securely stored using Firebase, a lightweight and efficient database engine. This ensures your notes are persistently saved, even if you close the app or restart your device.
 
 ## Getting Started
 ----
