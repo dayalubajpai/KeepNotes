@@ -1,6 +1,6 @@
 # KeepNotes App
 
-![KeepNotes]
+[KeepNotes]
 
 KeepNotes is a powerful note-taking application built with Flutter and Dart, using the BLoC architecture pattern. It provides a seamless and intuitive user experience for managing and organizing your notes efficiently.
 
