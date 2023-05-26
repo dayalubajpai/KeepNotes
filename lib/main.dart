@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keepnotes/bloc/InternetCubit/internetcheckcubit.dart';
 import 'package:keepnotes/bloc/authCubit/authCubit.dart';
-import 'package:keepnotes/bloc/authCubit/authState.dart';
 import 'package:keepnotes/bloc/firebaseBloc/fireRealBloc.dart';
-import 'package:keepnotes/bloc/splash/splash_cubit.dart';
-import 'package:keepnotes/presentation/home/homekeep.dart';
-import 'package:keepnotes/presentation/login/signup.dart';
 import 'package:keepnotes/presentation/splash/splash.dart';
 
 import 'bloc/firebaseBloc/fireRealEvent.dart';
@@ -30,7 +26,7 @@ class KeepNotes extends StatelessWidget {
             create: (context) => FireRealBloc()),
       ],
       child: MaterialApp(
-        home: KeepHome(),
+        home: SplashScreen(),
       ),
     );
   }
